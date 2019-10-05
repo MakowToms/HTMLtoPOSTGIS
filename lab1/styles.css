@@ -1,0 +1,14 @@
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto;
+  background-color: rgb(241, 248, 136);
+  padding: 10px;
+  grid-gap: 30px 30px;
+}
+input {
+  text-align: left;
+}
+label {
+  font-weight: bold;
+  text-align: right;
+}
