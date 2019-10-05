@@ -1,58 +1,72 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="styles.css">
-  <title>MiNI Bank</title>
-</head>
-<body>
-<h1>Witamy w MiniBanku!</h1>
-<div class="grid-container">
-  <div class="grid-item"><label>Rodzaj przelewu</label></div>
-  <div class="grid-item">
-    <select id="type" name="type">
-      <option> Krajowy </option>
-      <option> Międzynarodowy </option>
-      <option> Natychmiastowy </option>
-    </select>
-  </div>
-  <div class="grid-item"><label>Z rachunku</label></div>  
-  <div class="grid-item">
-    <select id="from" name="from">
-      <option> 12 2504 5866 5984 5214 5489 6523 (konto studenckie) </option>
-      <option> 12 2504 5866 5984 5214 5489 6558 (konto szkolne) </option>
-      <option> 12 2504 5866 5984 5214 5489 6528 (konto walutowe) </option>
-    </select>
-  </div>  
-  <div class="grid-item"><label>Odbiorca</label></div>  
-  <div class="grid-item">
-    <textarea name="Text1" id="name" name="name" cols="40" rows="5"></textarea>
-  </div>
-  <div class="grid-item"><label>Rachunek odbiorcy</label></div>
-  <div class="grid-item">
-    <input type="tel" id="account" name="account"
-    pattern="[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}"
-    value="" size="30" required
-    placeholder="12 3456 7890 1111 2222 3333 4444">
-   </div>  
-  <div class="grid-item"><label>Tytuł</label></div>
-  <div class="grid-item">
-    <input type="text" id="title" name="title" required
-      minlength="4" maxlength="30" size="30">
-  </div>
-  <div class="grid-item"><label>Kwota</label></div>
-  <div class="grid-item">
-    <input type="number" id="amount" name="amount" required
-      min="0" step="0.01">
-  </div>
-  <div class="grid-item"><label>Data wyjścia</label></div>
-  <div class="grid-item">
-    <input type="date" id="date" name="date" required>
-  </div>
-  <div class="grid-item"></div>
-  <div class="grid-item">
-    <input type="submit" value="Wykonaj">
-  </div>
-</div>
-</body>
+	<head>
+  		<meta charset="utf-8">
+  		<link rel="stylesheet" href="styles.css">
+		<title>MiNI Bank</title>
+	</head>
+	<body>
+		<div class="page-skeleton">
+			<header>
+				<div class="title-header">
+					<h1>Witamy w MiniBanku!</h1>
+				</div>
+				<img class="logo" src="logo.png">
+			</header>
+			<div class="form-grid">
+  				<div class="form-label">
+  					<label>Rodzaj przelewu</label>
+  				</div>
+  				<div class="form-input">
+    				<select id="type" name="type">
+      					<option> Krajowy </option>
+      					<option> Międzynarodowy </option>
+      					<option> Natychmiastowy </option>
+    				</select>
+  				</div>
+  				<div class="form-label">
+  					<label>Z rachunku</label>
+  				</div>  
+  				<div class="form-input">
+    				<select id="from" name="from">
+     		 			<option> 12 2504 5866 5984 5214 5489 6523 (konto studenckie) </option>
+      					<option> 12 2504 5866 5984 5214 5489 6558 (konto szkolne) </option>
+      					<option> 12 2504 5866 5984 5214 5489 6528 (konto walutowe) </option>
+    				</select>
+  				</div>  
+  				<div class="form-label">
+  					<label>Odbiorca</label>
+  				</div>  
+  				<div class="form-input">
+    				<textarea name="Text1" id="name" name="name" cols="40" rows="5"></textarea>
+  				</div>
+  				<div class="form-label">
+  					<label>Rachunek odbiorcy</label></div>
+  				<div class="form-input">
+    				<input type="tel" id="account" name="account" pattern="[0-9]{2} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4} [0-9]{4}" value="" size="30" required placeholder="12 3456 7890 1111 2222 3333 4444">
+   				</div>  
+  				<div class="form-label">
+  					<label>Tytuł</label>
+  				</div>
+  				<div class="form-input">
+    				<input type="text" id="title" name="title" required minlength="4" maxlength="30" size="30">
+  				</div>
+  				<div class="form-label">
+  					<label>Kwota</label>
+  				</div>
+  				<div class="form-input">
+    				<input type="number" id="amount" name="amount" required min="0" step="0.01">
+  				</div>
+  				<div class="form-label">
+  					<label>Data wykonania</label>
+  				</div>
+  				<div class="form-input">
+    				<input type="date" id="date" name="date" required>
+  				</div>
+  				<div class="form-input">
+    				<input type="submit" value="Wykonaj">
+  				</div>
+			</div>
+		</div>
+	</body>
 </html> 

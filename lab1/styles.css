@@ -1,14 +1,66 @@
-.grid-container {
-  display: grid;
-  grid-template-columns: auto auto;
-  background-color: rgb(241, 248, 136);
-  padding: 10px;
-  grid-gap: 30px 30px;
+body {
+	background-image: url("bg.jpg");
+ 	background-color: #cccccc;
+ 	background-size: 100%;
+ 	min-height: 100vh;
+ 	padding: 0px;
+ 	margin: 0px;
+ 	display: flex;
+	font: 17px arial, sans-serif;
 }
-input {
-  text-align: left;
+
+header {
+	text-align: center;
+	padding: 10px; 
+	background-color: white;
+	margin: 20px;
+	border-radius: 10px;
+	display: grid;
+	grid-template-columns: 100px auto 100px;
 }
-label {
-  font-weight: bold;
-  text-align: right;
+
+.title-header {
+	grid-column-start: 2;
+}
+
+.logo {
+	grid-column-start: 3;
+	height: 80px;
+	width: 60px;
+}
+
+.page-skeleton {
+	margin-right: auto;
+	margin-left: auto;
+	margin-top: 0px;
+	margin-bottom: 0px;
+	min-height: 100vh;
+	min-width: 1200px;
+	background-color: rgba(200, 232, 234, 0.7);
+}
+
+.form-grid {
+	display: grid;
+	grid-template-columns: 300px 50px 500px;
+	margin-left: 20px;
+	margin-right: 20px;
+	padding: 20px;
+	grid-gap: 30px 0px;
+	border-radius: 10px;
+	background-color: white;
+}
+
+.form-label {
+	grid-column-start: 1;
+	grid-column-end: 2;
+
+	font-weight: bold;
+	text-align: right;
+}
+
+.form-input {
+	grid-column-start: 3;
+	grid-column-end: 4;
+
+	text-align: left;
 }
