@@ -1,14 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="utf-8" />
-    <title>Super Duper Space Game</title>
-    <style>
-    	* { padding: 0; margin: 0; }
-    	canvas { background: #eee; display: block; margin: 0 auto; }
-    </style>
+  <meta charset="utf-8" />
+  <title>Super Duper Space Game</title>
+  <style>
+    * { padding: 0; margin: 0; }
+    .container {
+      text-align: center;
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      width: 130px;
+      display: block;
+      padding: 5px;
+      border: 2px solid black;
+      border-radius: 10px; 
+      background-color: beige;
+    }
+    .image {
+      position: fixed;
+      top: 10px;
+      left: 200px;
+      visibility: hidden;
+    }
+    .endGame{
+      position: fixed;
+    }
+    canvas {
+      background: white;
+      display: block;
+      margin: 0 auto;
+    }
+  </style>
 </head>
 <body>
-    <script src="game.js"></script>
+  <!-- <img class="image" src="spaceship.jpeg"> -->
+  <div class="container">
+    <label class="field">Time: <span id="time">0</span>s</label>
+    <label class="field">Points: <span id="result">0</span></label>
+    <label class="field">Armor: <span id="armor">0</span>%</label>
+    <label class="field">Lives: <span id="lives">0</span></label>    
+  </div>
+  <div class="endGame">
+    <h1>
+      Congratulations!
+      You win <span id="endPoints">0</span> points!
+      You can buy better spaceshipgun!
+    </h1>
+    <button id="tryAgain">Try again</button>
+  </div>
+  <script src="game.js"></script>
 </body>
 </html>
