@@ -12,10 +12,12 @@
       left: 10px;
       width: 130px;
       display: block;
+      background-color: beige;
+    }
+    .niceBox {
       padding: 5px;
       border: 2px solid black;
       border-radius: 10px; 
-      background-color: beige;
     }
     .image {
       position: fixed;
@@ -25,6 +27,16 @@
     }
     .endGame{
       position: fixed;
+      width: 400px;
+      height: 100px;
+      top: 50%;
+      left: 50%;
+      margin-top: -50px; /* Negative half of height. */
+      margin-left: -200px; /* Negative half of width. */
+      visibility: hidden;
+      display: block;
+      text-align: center;
+      background-color: greenyellow;
     }
     canvas {
       background: white;
@@ -35,19 +47,22 @@
 </head>
 <body>
   <!-- <img class="image" src="spaceship.jpeg"> -->
-  <div class="container">
+  <div class="container niceBox">
     <label class="field">Time: <span id="time">0</span>s</label>
     <label class="field">Points: <span id="result">0</span></label>
     <label class="field">Armor: <span id="armor">0</span>%</label>
     <label class="field">Lives: <span id="lives">0</span></label>    
   </div>
-  <div class="endGame">
-    <h1>
+  <div class="endGame niceBox" id="endGame">
+    <h3>
       Congratulations!
+      <br>
       You win <span id="endPoints">0</span> points!
+      <br>
       You can buy better spaceshipgun!
-    </h1>
+    </h3>
     <button id="tryAgain">Try again</button>
+    <button id="continue">One more live...</button>    
   </div>
   <script src="game.js"></script>
 </body>

@@ -14,18 +14,24 @@ let MAX_VEL = 500 * REFRESHING_INTERVAL / 1000
 let MIN_ENEMY_SPEED = 5 * REFRESHING_INTERVAL / 1000;
 let MAX_ENEMY_SPEED = 50 * REFRESHING_INTERVAL / 1000;
 
-let NUM_START_ENEMIES = 30;
-let BASIC_PROB_OF_NEW_ENEMY = 0.5 / REFRESHING_INTERVAL 
+let NUM_START_ENEMIES = 10;
+let BASIC_PROB_OF_NEW_ENEMY = 0.3 / REFRESHING_INTERVAL 
+let PROB_OF_NEW_ENEMY_COEFFICIENT = 0.1
 let PROB_OF_NEW_ENEMY = BASIC_PROB_OF_NEW_ENEMY;
 
 let START_TIME = Date.now();
+let STOP_TIME = Date.now();
 let POINTS = 0;
 
+let BEGINNING_LIVES = 3;
 let LIVES = 1;
+let BEGINNING_HIT_PROBABILITY = 0.5;
 let HIT_PROBABILITY = 0.9;
 
 let SPACE_WIDTH = 40;
 let SPACE_HIGHT = 40;
+
+let ATTACK_PLAYER = 0.1;
 
 class GameArea {
   constructor() {
@@ -41,6 +47,12 @@ class GameArea {
   clear() {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
+  putDefaultParameters() {
+    START_TIME = Date.now();
+    POINTS = 0;
+    HIT_PROBABILITY = BEGINNING_HIT_PROBABILITY;
+    LIVES = BEGINNING_LIVES;
+  }
 }
 
 class Enemy {
@@ -51,6 +63,8 @@ class Enemy {
     this.y = y;
     this.velx = velx;
     this.vely = vely;
+    this.playerVelx = 0;
+    this.playerVely = 0;
   }
   update(){
     var context = gameArea.context;
@@ -59,16 +73,29 @@ class Enemy {
     context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI);
     context.fill();
   }
-  makeMove() {
-    this.x += this.velx;
-    this.y += this.vely;
+  makeMove(player) {
+    var distance = Math.sqrt(Math.pow(this.x - player.x, 2) +
+                             Math.pow(this.y - player.y, 2));
+    this.playerVelx = (player.x - this.x) / distance
+    this.playerVely = (player.y - this.y) / distance
+    this.x += this.velx + this.playerVelx * ATTACK_PLAYER;
+    this.y += this.vely + this.playerVely * ATTACK_PLAYER;
   }
 }
 
 class Player {
   constructor(x, y) {
     this.x = x;
+    this.defaultX = x;
     this.y = y;
+    this.defaultY = y;
+    this.velx = 0;
+    this.vely = 0;
+    this.angle = Math.PI / 2;
+  }
+  restart() {
+    this.x = this.defaultX;
+    this.y = this.defaultY;
     this.velx = 0;
     this.vely = 0;
     this.angle = Math.PI / 2;
@@ -104,6 +131,9 @@ class Player {
     if (this.vely < 0) this.vely += PLAYER_DECCELERATION;
   }
   pointPlayerToCursor() {
+    if (LIVES <= 0) {
+      return
+    }
     var alpha = Math.atan2(cursor.y - player.y, player.x - cursor.x) + Math.PI / 2;
     player.angle = alpha;
     player.update();
@@ -178,6 +208,10 @@ function removeLives() {
   if (Math.random() < HIT_PROBABILITY) {
     LIVES -= 1;
     POINTS -= 100;
+    HIT_PROBABILITY -= 0.05;
+  }
+  else {
+    HIT_PROBABILITY += 0.05;
   }
 }
 
@@ -215,65 +249,52 @@ function createRandomEnemy() {
 function startGame() {
   //initialize game
   gameArea = new GameArea();
-  START_TIME = Date.now();
-  POINTS = 0;
-  HIT_PROBABILITY = 0.9;
-  LIVES = 1;
-
+  gameArea.putDefaultParameters();
+  
+  //initialize players
+  player = new Player(gameArea.canvas.width / 2, gameArea.canvas.height / 2);
+  
   //initialize enemies
   for (var i = 0; i < NUM_START_ENEMIES; i++) {
     enemies.push(createRandomEnemy());
   }
 
-  //initialize players
-  player = new Player(gameArea.canvas.width / 2, gameArea.canvas.height / 2);
-  
   //initialize frame refreshing
   gameArea.start();
 }
 
 function stopGame() {
+  STOP_TIME = Date.now()
   gameArea.clear()
-  clearInterval(gameArea.interval)
-  // gameArea.context.remove()
-  gameArea.canvas.remove()
-  document.removeEventListener("keyup", (e) => {
-    if (e.code === "Space" || e.code == "Enter") {
-      shoot();
-    }
-  })
-  // delete gameArea
-  // document.body.childNodes[0].remove()
+  document.getElementById("endGame").style.visibility = "visible"
+}
+
+function continueGame() {
+  START_TIME += (Date.now()-STOP_TIME)
+  document.getElementById("endGame").style.visibility = "hidden"
+  LIVES = 1
+  POINTS -= 1000
 }
 
 function restartGame() {
   enemies = [];
   bullets = [];
-  START_TIME = Date.now();
-  POINTS = 0;
-  HIT_PROBABILITY = 0.9;
-  LIVES = 1;
+  gameArea.putDefaultParameters()
+  player.restart()
 
   //initialize enemies
   for (var i = 0; i < NUM_START_ENEMIES; i++) {
     enemies.push(createRandomEnemy());
   }
-  gameArea.canvas = document.createElement("canvas");
-  gameArea.canvas.width = Math.max(document.documentElement.clientWidth, window.innerWidth || 0);
-  gameArea.canvas.height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-  gameArea.context = gameArea.canvas.getContext("2d");
-  document.body.insertBefore(gameArea.canvas, document.body.childNodes[0]);
-  gameArea.start();
-  gameArea.canvas.addEventListener("mousemove",  updateCursor);
-  gameArea.canvas.addEventListener("click", shoot);
-  gameArea.canvas.addEventListener("keyup", (e) => {
-    if (e.code === "Space" || e.code == "Enter") {
-      shoot();
-    }
-  })
+
+  document.getElementById("endGame").style.visibility = "hidden"
 }
 
 function updateGameArea() {
+  if (LIVES <= 0) {
+    return
+  }
+
   var timeFromBeginning = (Date.now() - START_TIME) / 1000;
 
   //change player velocity based on pressed keys
@@ -286,10 +307,10 @@ function updateGameArea() {
   gameArea.clear();
 
   //move everything
-  for(i = 0; i < enemies.length; i++) {
-    enemies[i].makeMove();
-  }
   player.makeMove();
+  for(i = 0; i < enemies.length; i++) {
+    enemies[i].makeMove(player);
+  }
   for(i = 0; i < bullets.length; i++) {
     bullets[i].move();
   }
@@ -324,9 +345,10 @@ function updateGameArea() {
   }
   player.pointPlayerToCursor();
 
-  // update hard
+  // update level
   // console.log(Math.log10(timeFromBeginning))
-  PROB_OF_NEW_ENEMY = BASIC_PROB_OF_NEW_ENEMY + 0.3 * Math.log10(timeFromBeginning) / REFRESHING_INTERVAL
+  PROB_OF_NEW_ENEMY = BASIC_PROB_OF_NEW_ENEMY +
+  PROB_OF_NEW_ENEMY_COEFFICIENT * Math.log10(timeFromBeginning) / REFRESHING_INTERVAL
 
   enemiesIndex = 0;
   while (enemiesIndex < enemies.length) {
@@ -350,8 +372,7 @@ function updateGameArea() {
   }
 }
 
-
-
+// @deprecated
 function drawTriangle(color, x, y, angle) {
   var context = gameArea.context;
   context.fillStyle = color;
@@ -369,13 +390,6 @@ function drawSpaceShip(x, y, angle) {
   ctx.rotate(-angle);
   ctx.drawImage(image, - SPACE_WIDTH/2, - SPACE_HIGHT/2, SPACE_WIDTH, SPACE_HIGHT);
   ctx.restore()
-  // var image = document.getElementById("image")
-  // context.save();
-  // context.translate(canvas.width/2,canvas.height/2);
-  // context.rotate(angle*Math.PI/180);
-  // context.drawImage(image, x - SPACE_WIDTH/2, y - SPACE_HIGHT/2, SPACE_WIDTH, SPACE_HIGHT);
-  // // context.restore();
-  // context.rotate(-angle*Math.PI/180);
 }
 
 function updateCursor(e) {
@@ -398,9 +412,6 @@ var player;
 var cursor = new Cursor();
 
 var image=document.createElement("img");
-image.onload=function(){
-    context.drawImage(image,canvas.width/2-image.width/2,canvas.height/2-image.width/2);
-}
 image.src="image.png";
 
 var map = {}; // pressed keys array
@@ -414,17 +425,13 @@ startGame();
 
 gameArea.canvas.addEventListener("mousemove",  updateCursor);
 gameArea.canvas.addEventListener("click", shoot);
-// document.addEventListener("keypress", (e) => {
-//   if      (e.code === "ArrowUp"    || e.code == "KeyW") player.vely -= PLAYER_ACCELERATION; 
-//   else if (e.code === "ArrowDown"  || e.code == "KeyS") player.vely += PLAYER_ACCELERATION;
-//   if      (e.code === "ArrowLeft"  || e.code == "KeyA") player.velx -= PLAYER_ACCELERATION; 
-//   else if (e.code === "ArrowRight" || e.code == "KeyD") player.velx += PLAYER_ACCELERATION;
-// })
 
 document.getElementById("tryAgain").addEventListener("click", restartGame);
+document.getElementById("continue").addEventListener("click", continueGame);
 
-gameArea.canvas.addEventListener("keyup", (e) => {
-  if (e.code === "Space" || e.code == "Enter") {
+document.addEventListener("keyup", (e) => {
+  if (e.code === "Space") {
+    e.preventDefault();
     shoot();
   }
 })
