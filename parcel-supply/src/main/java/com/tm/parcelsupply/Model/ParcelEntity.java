@@ -32,6 +32,5 @@ public class ParcelEntity {
     @NotNull
     private Double width;
     @NotNull
-
     private Double length;
 }
