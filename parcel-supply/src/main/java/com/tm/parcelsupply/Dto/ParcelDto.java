@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class ParcelDto {
-    private Long id;
+    private Long parcelId;
 
     //location
     private Double lat;
