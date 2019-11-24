@@ -4,10 +4,7 @@ package com.tm.parcelsupply.Controller;
 import com.tm.parcelsupply.Command.CreateNewParcelCommand;
 import com.tm.parcelsupply.Command.FetchParcelsCommand;
 import com.tm.parcelsupply.Command.UpdateParcelCommand;
-import com.tm.parcelsupply.Dto.CreateParcelRequestDto;
-import com.tm.parcelsupply.Dto.DeleteParcelRequestDto;
 import com.tm.parcelsupply.Dto.ParcelDto;
-import com.tm.parcelsupply.Dto.UpdateParcelRequestDto;
 import com.tm.parcelsupply.Service.ParcelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,8 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.validation.Valid;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +34,9 @@ public class ParcelController {
     }
 
     @PostMapping()
-    public ResponseEntity createParcel(@RequestBody CreateNewParcelCommand command) {
+    public ResponseEntity createParcel(@Valid @RequestBody CreateNewParcelCommand command) {
         try{
+            System.out.println("Something");
             parcelService.createParcel(command);
         }catch(ResponseStatusException e){
             return ResponseEntity.status(e.getStatus()).body(e.getMessage());

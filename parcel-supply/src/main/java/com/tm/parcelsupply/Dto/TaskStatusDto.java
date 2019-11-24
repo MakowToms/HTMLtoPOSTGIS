@@ -6,9 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteParcelRequestDto {
-    private Long id;
+@Builder
+public class TaskStatusDto {
+    private Long taskId;
+
+    private String status;
 }

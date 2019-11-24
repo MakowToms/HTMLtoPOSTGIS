@@ -3,10 +3,7 @@ package com.tm.parcelsupply.Service;
 import com.tm.parcelsupply.Command.CreateNewParcelCommand;
 import com.tm.parcelsupply.Command.FetchParcelsCommand;
 import com.tm.parcelsupply.Command.UpdateParcelCommand;
-import com.tm.parcelsupply.Dto.CreateParcelRequestDto;
-import com.tm.parcelsupply.Dto.DeleteParcelRequestDto;
 import com.tm.parcelsupply.Dto.ParcelDto;
-import com.tm.parcelsupply.Dto.UpdateParcelRequestDto;
 import com.tm.parcelsupply.Mapper.ParcelMapper;
 import com.tm.parcelsupply.Model.ParcelEntity;
 import com.tm.parcelsupply.Repository.ParcelRepository;
@@ -51,6 +48,7 @@ public class ParcelService {
 
     @Transactional
     public void createParcel(CreateNewParcelCommand command) {
+        System.out.println("Something 2");
         ParcelEntity parcelEntity = ParcelEntity.builder()
                 .lat(command.getLat())
                 .lng(command.getLng())

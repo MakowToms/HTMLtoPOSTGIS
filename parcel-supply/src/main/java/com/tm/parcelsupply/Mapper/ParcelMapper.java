@@ -10,5 +10,5 @@ public interface ParcelMapper {
 
     ParcelMapper INSTANCE = Mappers.getMapper(ParcelMapper.class);
 
-    ParcelDto mapEntity(ParcelEntity example);
+    ParcelDto mapEntity(ParcelEntity parcelEntity);
 }

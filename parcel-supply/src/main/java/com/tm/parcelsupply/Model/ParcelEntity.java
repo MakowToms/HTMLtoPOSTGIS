@@ -21,16 +21,11 @@ public class ParcelEntity {
     private Long parcelId;
 
     //location
-    @NotNull
     private Double lat;
-    @NotNull
     private Double lng;
 
     //size
-    @NotNull
     private Double height;
-    @NotNull
     private Double width;
-    @NotNull
     private Double length;
 }
